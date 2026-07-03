@@ -1,5 +1,7 @@
 # ReconX-Application
 Deutsche Bank trainer copy folder as ReconX app 
+
+
 # ReconX — Enterprise Trade Reconciliation Platform (Trainer Copy)
 
 > Deutsche Bank — TDI 2026 Graduate Technical Training Programme
