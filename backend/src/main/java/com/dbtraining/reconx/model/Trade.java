@@ -11,7 +11,7 @@ import java.util.Objects;
  * builder or {@link TradeFactory}. The sealed contract lives on the interface;
  * the shared plumbing lives here.</p>
  */
-abstract sealed class Trade
+abstract sealed class Trade implements TradeType
         permits EquityTrade, FXTrade, BondTrade, DerivativeTrade {
 
     protected final TradeRef tradeRef;
