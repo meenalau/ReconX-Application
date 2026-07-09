@@ -23,7 +23,7 @@ import java.util.Objects;
  * equals/hashCode from tradeRef (Object methods on a regular class)
  * toString() omits PII, prints reference/symbol/qty/price/side
  */
-public final class EquityTrade implements TradeType extends Trade{
+public final class EquityTrade extends Trade{
 
     private final TradeRef tradeRef;
     private final String instrumentSymbol;
