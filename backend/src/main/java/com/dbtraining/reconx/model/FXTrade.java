@@ -19,7 +19,7 @@ import java.util.Objects;
  * OBSERVE: notional().currency() == ccy2; .amount() == notionalCcy1 * fxRate.
  * ============================================================================
  */
-public final class FXTrade implements TradeType {
+public final class FXTrade implements TradeType extends Trade{
 
     private final TradeRef tradeRef;
     private final Currency ccy1;
