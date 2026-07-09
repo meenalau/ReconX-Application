@@ -15,7 +15,7 @@ import java.util.Objects;
  *          Modelling them on the trade is the simplest path for the demo.
  * ============================================================================
  */
-public final class BondTrade extends Trade {
+public final class BondTrade extends TradeType {
 
     private final TradeRef tradeRef;
     private final String isin;
