@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Swagger/OpenAPI metadata + bearerAuth scheme.
  *
- * Visit http://localhost:8080/api/swagger-ui.html after boot.
+ * Visit http://localhost:8080/swagger-ui/index.html after boot.
  */
 @Configuration
 public class OpenApiConfig {

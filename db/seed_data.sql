@@ -38,20 +38,22 @@ SELECT
     jsonb_build_object('seq', g, 'auto', true)
 FROM generate_series(1, 45) AS g;
 
--- 500 trades spread across 4 months (April–July 2026)
+-- 50 trades spread across 4 months (April–July 2026)
+-- ============================================================================
+-- TICKET-ADV010 — Seed 50 sample trades for VWAP / window function testing
+-- ============================================================================
 INSERT INTO trades (trade_ref, instrument_id, counterparty_id, asset_class, side, quantity, price, trade_date, status)
 SELECT
     'TRD-2026-' || LPAD(n::TEXT, 6, '0'),
-    1 + (n % 50),
-    1 + (n % 10),
+    1 + (n % 15),   -- 15 instruments exist (ids 1-15)
+    1 + (n % 10),   -- 10 counterparties exist (ids 1-10)
     (ARRAY['EQUITY','FIXED_INCOME','FX','COMMODITY','DERIVATIVE'])[1 + (n % 5)],
     (ARRAY['BUY','SELL'])[1 + (n % 2)],
     ROUND((random() * 10000 + 1)::NUMERIC, 4),
     ROUND((random() * 500 + 1)::NUMERIC, 4),
     DATE '2026-04-01' + (n % 120) * INTERVAL '1 day',
     (ARRAY['PENDING','MATCHED','UNMATCHED','DISPUTED','MATCHED','MATCHED'])[1 + (n % 6)]
-FROM generate_series(1, 500) AS n;
-
+FROM generate_series(1, 50) AS n;
 -- A handful of breaks against the unmatched/disputed trades
 INSERT INTO recon_breaks (trade_id, discrepancy_type, status)
 SELECT id,

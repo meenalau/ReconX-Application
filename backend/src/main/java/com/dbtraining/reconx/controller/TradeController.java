@@ -5,6 +5,7 @@ import com.dbtraining.reconx.dto.TradeMapper;
 import com.dbtraining.reconx.dto.TradeRequest;
 import com.dbtraining.reconx.dto.TradeResponse;
 import com.dbtraining.reconx.repository.entity.Trade;
+import com.dbtraining.reconx.service.TradeEventService;
 import com.dbtraining.reconx.service.TradeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -40,9 +41,13 @@ public class TradeController {
     private final TradeService service;
     private final TradeMapper mapper;
 
-    public TradeController(TradeService service, TradeMapper mapper) {
+    private final TradeEventService tradeEventService;
+
+
+    public TradeController(TradeService service, TradeMapper mapper, TradeEventService tradeEventService) {
         this.service = service;
         this.mapper = mapper;
+        this.tradeEventService=tradeEventService;
     }
 
     @GetMapping
@@ -63,6 +68,8 @@ public class TradeController {
                                                 @AuthenticationPrincipal Object principal) {
         String actor = String.valueOf(principal);
         Trade saved = service.create(req, actor);
+        // Notify all browsers
+        tradeEventService.publishTrade(saved);
         return ResponseEntity
                 .created(URI.create("/api/v1/trades/" + saved.getId()))
                 .body(mapper.toResponse(saved));
@@ -91,4 +98,6 @@ public class TradeController {
         service.softDelete(id, String.valueOf(principal));
         return ResponseEntity.noContent().build();
     }
+
+
 }

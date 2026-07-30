@@ -1,6 +1,5 @@
--- ============================================================================
--- VWAP per instrument per day (window function)
--- ============================================================================
+REFRESH MATERIALIZED VIEW CONCURRENTLY mv_daily_recon_summary;
+
 SELECT DISTINCT
     t.instrument_id,
     t.trade_date,
@@ -12,11 +11,6 @@ WHERE t.deleted_at IS NULL
   AND t.asset_class = 'EQUITY'
 ORDER BY t.trade_date DESC, t.instrument_id;
 
-
--- ============================================================================
--- Recursive CTE: trade lifecycle (execution -> settlement
---                -> recon_break -> resolution)
--- ============================================================================
 WITH RECURSIVE trade_lifecycle AS (
     -- anchor: every trade in its execution state
     SELECT
@@ -49,15 +43,3 @@ WITH RECURSIVE trade_lifecycle AS (
 )
 SELECT * FROM trade_lifecycle
 ORDER BY trade_id, step;
-
--- ============================================================================
--- TICKET-ADV008 — REFRESH the daily-summary materialised view (concurrent so it can
---         run while the dashboard is reading it)
--- ============================================================================
-REFRESH MATERIALIZED VIEW CONCURRENTLY mv_daily_recon_summary;
--- ============================================================================
--- TICKET-ADV009 — JSONB lookup: which instruments have sector = 'Banking'?
--- ============================================================================
-SELECT id, symbol, metadata
-FROM instruments
-WHERE metadata @> '{"sector":"Banking"}'::jsonb;

@@ -47,6 +47,8 @@ public class Trade {
     @JoinColumn(name = "instrument_id")
     private Instrument instrument;
 
+    //ticket 0028
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "counterparty_id")
     private Counterparty counterparty;
