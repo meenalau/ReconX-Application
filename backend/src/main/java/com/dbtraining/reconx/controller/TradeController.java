@@ -18,6 +18,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -98,6 +99,9 @@ public class TradeController {
         service.softDelete(id, String.valueOf(principal));
         return ResponseEntity.noContent().build();
     }
-
+    @GetMapping("/stream")
+    public SseEmitter streamTrades() {
+        return tradeEventService.subscribe();
+    }
 
 }
